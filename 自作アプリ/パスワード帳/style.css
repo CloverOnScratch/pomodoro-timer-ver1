@@ -1,0 +1,439 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --primary: #4a6cf7;
+  --primary-hover: #3a5ce5;
+  --danger: #e74c3c;
+  --danger-hover: #c0392b;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --radius: 12px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI",
+    "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+#app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+
+.screen {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- ロック画面 ---- */
+#lock-screen {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lock-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 400px;
+}
+
+.lock-card h1 {
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.lock-card p {
+  color: var(--muted);
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.reset-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.reset-section summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.reset-section p {
+  font-size: 0.85rem;
+  margin: 12px 0;
+  text-align: left;
+}
+
+/* ---- メイン画面 ---- */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.app-header h1 {
+  font-size: 1.4rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.toolbar input[type="search"] {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* ---- エントリリスト ---- */
+.entry-list {
+  display: grid;
+  gap: 12px;
+}
+
+.entry-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.entry-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.entry-service {
+  font-size: 1.1rem;
+  font-weight: 600;
+  flex: 1;
+  word-break: break-all;
+}
+
+.entry-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.entry-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 0.92rem;
+  border-top: 1px solid var(--border);
+}
+
+.entry-field:first-of-type {
+  border-top: none;
+}
+
+.entry-field-label {
+  color: var(--muted);
+  min-width: 80px;
+  font-size: 0.85rem;
+}
+
+.entry-field-value {
+  flex: 1;
+  word-break: break-all;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.entry-field-value a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.entry-field-value a:hover {
+  text-decoration: underline;
+}
+
+.password-value {
+  letter-spacing: 0.05em;
+}
+
+.empty-message {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 40px;
+  padding: 40px 20px;
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 2px dashed var(--border);
+}
+
+/* ---- フォーム要素 ---- */
+input, textarea, button {
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="number"],
+input[type="search"],
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.15);
+}
+
+label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+label input[type="checkbox"],
+label input[type="radio"] {
+  margin-right: 6px;
+}
+
+.input-group {
+  display: flex;
+  gap: 6px;
+  align-items: stretch;
+  margin-bottom: 12px;
+}
+
+.input-group input {
+  flex: 1;
+}
+
+.toggle-visibility,
+.icon-btn {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.15s;
+}
+
+.toggle-visibility:hover,
+.icon-btn:hover {
+  background: var(--bg);
+}
+
+.required {
+  color: var(--danger);
+}
+
+/* ---- ボタン ---- */
+button {
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  padding: 10px 16px;
+  font-weight: 500;
+  transition: background 0.15s, transform 0.05s;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.primary-btn {
+  background: var(--primary);
+  color: #fff;
+}
+
+.primary-btn:hover {
+  background: var(--primary-hover);
+}
+
+.secondary-btn {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.secondary-btn:hover {
+  background: var(--bg);
+}
+
+.danger-btn {
+  background: var(--danger);
+  color: #fff;
+}
+
+.danger-btn:hover {
+  background: var(--danger-hover);
+}
+
+.small-btn {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}
+
+#unlock-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 4px;
+}
+
+/* ---- エラー表示 ---- */
+.error-message {
+  color: var(--danger);
+  font-size: 0.85rem;
+  min-height: 1.2em;
+  margin: 8px 0;
+}
+
+/* ---- モーダル ---- */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+.modal-content {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.generator-options {
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.generator-options label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.generator-options input[type="number"] {
+  width: 80px;
+  display: inline-block;
+}
+
+details summary {
+  cursor: pointer;
+  padding: 8px 0;
+  user-select: none;
+}
+
+/* ---- トースト ---- */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  z-index: 200;
+  font-size: 0.9rem;
+  animation: toastIn 0.2s ease;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ---- レスポンシブ ---- */
+@media (max-width: 600px) {
+  #app {
+    padding: 16px 12px 80px;
+  }
+
+  .app-header h1 {
+    font-size: 1.2rem;
+  }
+
+  .header-actions button {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+
+  .entry-field-label {
+    min-width: 60px;
+  }
+}
