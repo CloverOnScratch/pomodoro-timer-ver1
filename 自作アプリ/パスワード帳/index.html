@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>パスワード帳</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <!-- ロック画面（初回登録/ログイン） -->
+  <section id="lock-screen" class="screen">
+    <div class="lock-card">
+      <h1>🔐 パスワード帳</h1>
+      <p id="lock-message">マスターパスワードを入力してください</p>
+
+      <form id="unlock-form" autocomplete="off">
+        <div class="input-group">
+          <input type="password" id="master-password" placeholder="マスターパスワード" autocomplete="new-password" required>
+          <button type="button" class="toggle-visibility" data-target="master-password" aria-label="表示切替">👁</button>
+        </div>
+
+        <div class="input-group" id="confirm-group" style="display:none;">
+          <input type="password" id="master-password-confirm" placeholder="マスターパスワード（確認）" autocomplete="new-password">
+          <button type="button" class="toggle-visibility" data-target="master-password-confirm" aria-label="表示切替">👁</button>
+        </div>
+
+        <p id="lock-error" class="error-message"></p>
+        <button type="submit" id="unlock-btn" class="primary-btn">解除</button>
+      </form>
+
+      <details class="reset-section">
+        <summary>マスターパスワードを忘れた場合</summary>
+        <p>暗号化されたデータを復号する手段はありません。すべてのデータを削除して、最初からやり直すしかありません。</p>
+        <button type="button" id="reset-all-btn" class="danger-btn">すべてのデータを削除</button>
+      </details>
+    </div>
+  </section>
+
+  <!-- メイン画面 -->
+  <section id="main-screen" class="screen" style="display:none;">
+    <header class="app-header">
+      <h1>🔐 パスワード帳</h1>
+      <div class="header-actions">
+        <button type="button" id="export-btn" class="secondary-btn" title="エクスポート">📤 エクスポート</button>
+        <button type="button" id="import-btn" class="secondary-btn" title="インポート">📥 インポート</button>
+        <input type="file" id="import-file" accept=".json" style="display:none;">
+        <button type="button" id="lock-btn" class="secondary-btn" title="ロック">🔒 ロック</button>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <input type="search" id="search-input" placeholder="🔍 サービス名・ユーザー名で検索">
+      <button type="button" id="add-btn" class="primary-btn">＋ 新規追加</button>
+    </div>
+
+    <div id="entry-list" class="entry-list"></div>
+    <p id="empty-message" class="empty-message">まだパスワードが登録されていません。「＋ 新規追加」から登録してください。</p>
+  </section>
+
+  <!-- エントリ編集モーダル -->
+  <div id="entry-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h2 id="modal-title">新規追加</h2>
+      <form id="entry-form" autocomplete="off">
+        <input type="hidden" id="entry-id">
+
+        <label>
+          サービス名 <span class="required">*</span>
+          <input type="text" id="entry-service" required placeholder="例: Gmail">
+        </label>
+
+        <label>
+          ユーザー名 / メールアドレス
+          <input type="text" id="entry-username" placeholder="例: user@example.com">
+        </label>
+
+        <label>
+          パスワード <span class="required">*</span>
+          <div class="input-group">
+            <input type="password" id="entry-password" required>
+            <button type="button" class="toggle-visibility" data-target="entry-password" aria-label="表示切替">👁</button>
+            <button type="button" id="generate-password-btn" class="icon-btn" title="パスワード生成">🎲</button>
+          </div>
+        </label>
+
+        <details>
+          <summary>パスワード生成オプション</summary>
+          <div class="generator-options">
+            <label>長さ: <input type="number" id="gen-length" value="16" min="4" max="128"></label>
+            <label><input type="checkbox" id="gen-upper" checked> 大文字</label>
+            <label><input type="checkbox" id="gen-lower" checked> 小文字</label>
+            <label><input type="checkbox" id="gen-digits" checked> 数字</label>
+            <label><input type="checkbox" id="gen-symbols" checked> 記号</label>
+          </div>
+        </details>
+
+        <label>
+          URL
+          <input type="url" id="entry-url" placeholder="https://example.com">
+        </label>
+
+        <label>
+          メモ
+          <textarea id="entry-notes" rows="3"></textarea>
+        </label>
+
+        <p id="entry-error" class="error-message"></p>
+
+        <div class="modal-actions">
+          <button type="button" id="cancel-btn" class="secondary-btn">キャンセル</button>
+          <button type="submit" class="primary-btn">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- インポート時のパスワード入力モーダル -->
+  <div id="import-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h2>インポート</h2>
+      <p>エクスポート時に使用していたマスターパスワードを入力してください。</p>
+      <form id="import-form" autocomplete="off">
+        <div class="input-group">
+          <input type="password" id="import-password" placeholder="エクスポート時のマスターパスワード" required>
+          <button type="button" class="toggle-visibility" data-target="import-password" aria-label="表示切替">👁</button>
+        </div>
+        <label style="margin-top:12px;">
+          <input type="radio" name="import-mode" value="merge" checked> マージ（既存に追加）
+        </label>
+        <label>
+          <input type="radio" name="import-mode" value="replace"> 置き換え（既存を削除）
+        </label>
+        <p id="import-error" class="error-message"></p>
+        <div class="modal-actions">
+          <button type="button" id="import-cancel-btn" class="secondary-btn">キャンセル</button>
+          <button type="submit" class="primary-btn">インポート</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- トースト通知 -->
+  <div id="toast" class="toast" style="display:none;"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
